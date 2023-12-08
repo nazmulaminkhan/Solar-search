@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Something...</title>
+    <link rel="shortcut icon" href="./img/search.png" type="image/x-icon">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+</head>
+<style>
+    @import url('https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css');
+@import url('https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css');
+@import url('https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css');
+@font-face {
+    font-family: Tweet;
+    src: url(./fonts/twitter-ex.ttf);
+}
+@font-face {
+    font-family: Google Sans;
+    src: url(./fonts/googlesans.ttf);
+}
+body {
+    color: black;
+    font-family: Tweet;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    animation: zoomIn 1s ease-in-out;
+}
+/* Style for the context menu */
+.context-menu {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9d2;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 8px;
+      z-index: 1000;
+      border-radius: 7px;
+    }
+
+    /* Style for each context menu item */
+    .context-menu-item {
+      cursor: pointer;
+      padding: 8px;
+    }
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.title {
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    animation: zoomIn 1s ease-in-out;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+#search-input {
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    width: 300px;
+    font-size: 18px;
+}
+
+#search-button {
+    background-color: #ffffff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    padding-left: 4px;
+    padding-right: 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    cursor: pointer;
+}
+
+#search-button:hover {
+    background-color: #000000cd;
+}
+.video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1; /* Place it behind other content */
+}
+
+#background-video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+@keyframes zoomIn {
+    0% {
+        transform: scale(0); /* Initial size: zoomed out */
+        opacity: 0; /* Initial opacity: invisible */
+    }
+    100% {
+        transform: scale(1); /* Final size: zoomed in */
+        opacity: 1; /* Final opacity: fully visible */
+    }
+}
+
+
+.toggle-bar {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    background-color: #00ffaa;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    z-index: 999;
+    border-radius: 13px;
+}
+.toggle-bar:hover{
+    background-color: rgba(127, 255, 212, 0.582);
+}
+
+.toggle-button {
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.bar {
+    background-color: #fff;
+    height: 3px;
+    width: 20px;
+    margin: 2px 0;
+    border-radius: 2px;
+}
+
+.apps-menu {
+    display: none;
+    position: absolute;
+    top: 53px;
+    left: 2px;
+    background-color: #ffffffc8;
+    flex-direction: column;
+    border-radius: 11px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.apps-menu a {
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+</style>
+</head>
+<body>
+    <div id="contextMenu" class="context-menu">
+        <div class="context-menu-item" id="menuItemCopy">Copy <i class="fi fi-sr-copy"></i></div>
+        <div class="context-menu-item" id="menuItemPaste">Paste <i class="fi fi-sr-paste"></i></div>
+        <div class="context-menu-item" id="menuItemGoogleDrive">Open Google Drive</div>
+        <div class="context-menu-item" id="menuItemGoogleSearch">Search on Google</div>
+        <div class="context-menu-item" id="menuItemChatGPT">Visit ChatGPT</div>
+        <div class="context-menu-item" id="menuItemTwitter">Visit Twitter</div>
+      </div>
+      <div id="content">
+
+    <div class="toggle-bar" id="toggle-bar">
+        <div class="toggle-button" id="toggle-button">
+            <i class="fi fi-sr-apps"></i>
+        </div>
+        <div class="apps-menu" id="apps-menu">
+            <!-- Add your Google Apps links here -->
+            <br>
+            <a href="https://mail.google.com"><img src="./img/gmail.png" alt="" style="width: 35px;"></a><br>
+            <br>
+            <a href="https://drive.google.com"><img src="./img/google-drive.png" alt="" style="width: 35px;"></a><br>
+            <br>
+            <a href="https://keep.google.com"><img src="./img/keeps.png" alt="" style="width: 35px;"></a><br>
+            <br>
+            <a href="https://dropbox.com"><img src="./img/dropbox.png" alt="" style="width: 35px;"></a><br>
+            <br>
+            <a href="https://github.com"><img src="./img/github.png" alt="" style="width: 35px;"></a><br>
+            <br>
+            <a href="https://x.com"><img src="./img/twitter.png" alt="" style="width: 35px;"></a><br>
+            <br>
+            <a href="https://office.com"><img src="./img/office.png" alt="" style="width: 35px;"></a><br>
+            <br>
+            <a href="https://outlook.com"><img src="./img/outlook.png" alt="" style="width: 35px;"></a>
+            <br>
+            <!-- Add more apps as needed -->
+        </div>
+    </div>
+
+    <!-- Rest of your existing HTML content -->
+    <div class="video-container">
+        <video autoplay muted loop id="background-video">
+            <source src="./vid/130911 (720p).mp4" type="video/mp4">
+            <!-- Add additional source elements for different formats if needed -->
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="container">
+        <h1 class="title"><strong style="border: 1px solid transparent; border-radius: 9px; background-color: rgba(0, 0, 0, 0.834); color: rgba(255, 208, 0, 0.79);">Solar</strong> Search <i class="fi fi-ss-search"></i></h1>
+        <div class="search-container">
+            <input style="font-family: Google Sans;" type="text" id="search-input" placeholder="Search with Sun's power 🌞">
+            <button style="font-family: Google Sans;" id="search-button"><img src="./img/search.png" alt="" style="width: 20px;"></i></button>
+        </div>
+    </div>
+      </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("search-input");
+        const searchButton = document.getElementById("search-button");
+    
+        searchButton.addEventListener("click", function () {
+            const query = searchInput.value.trim();
+            if (query !== "") {
+                // Redirect to Google search results page with the query
+                window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+            }
+        });
+    
+        // Handle pressing Enter key in the input field
+        searchInput.addEventListener("keyup", function (event) {
+            if (event.key === "Enter") {
+                searchButton.click();
+            }
+        });
+    });
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleButton = document.getElementById("toggle-button");
+        const appsMenu = document.getElementById("apps-menu");
+    
+        toggleButton.addEventListener("click", function () {
+            appsMenu.style.display = appsMenu.style.display === "block" ? "none" : "block";
+        });
+    });
+    // Function to show the context menu
+    function showContextMenu(x, y) {
+      const contextMenu = document.getElementById('contextMenu');
+      contextMenu.style.display = 'block';
+      contextMenu.style.left = x + 'px';
+      contextMenu.style.top = y + 'px';
+    }
+
+    // Function to hide the context menu
+    function hideContextMenu() {
+      const contextMenu = document.getElementById('contextMenu');
+      contextMenu.style.display = 'none';
+    }
+
+    // Function to handle context menu item clicks
+    function handleMenuItemClick(item) {
+      switch (item.id) {
+        case 'menuItemCopy':
+          alert('Copying text...[Remember that some browsers does not support this outside feature]');
+          break;
+        case 'menuItemPaste':
+          alert('Pasting text...[Remember that some browsers does not support this outside feature]');
+          break;
+        case 'menuItemGoogleDrive':
+          window.open('https://drive.google.com/', '_blank');
+          break;
+        case 'menuItemGoogleSearch':
+          window.open('https://www.google.com/', '_blank');
+          break;
+        case 'menuItemChatGPT':
+          window.open('https://www.chatgpt.com/', '_blank');
+          break;
+        case 'menuItemTwitter':
+          window.open('https://twitter.com/', '_blank');
+          break;
+        default:
+          break;
+      }
+
+      hideContextMenu();
+    }
+
+    // Attach context menu event to the content div
+    const content = document.getElementById('content');
+    content.addEventListener('contextmenu', function (e) {
+      e.preventDefault(); // Prevent the default browser context menu
+      showContextMenu(e.pageX, e.pageY);
+    });
+
+    // Attach click event to each context menu item
+    const menuItemCopy = document.getElementById('menuItemCopy');
+    const menuItemPaste = document.getElementById('menuItemPaste');
+    const menuItemGoogleDrive = document.getElementById('menuItemGoogleDrive');
+    const menuItemGoogleSearch = document.getElementById('menuItemGoogleSearch');
+    const menuItemChatGPT = document.getElementById('menuItemChatGPT');
+    const menuItemTwitter = document.getElementById('menuItemTwitter');
+    
+    menuItemCopy.addEventListener('click', function () {
+      handleMenuItemClick(menuItemCopy);
+    });
+
+    menuItemPaste.addEventListener('click', function () {
+      handleMenuItemClick(menuItemPaste);
+    });
+
+    menuItemGoogleDrive.addEventListener('click', function () {
+      handleMenuItemClick(menuItemGoogleDrive);
+    });
+
+    menuItemGoogleSearch.addEventListener('click', function () {
+      handleMenuItemClick(menuItemGoogleSearch);
+    });
+
+    menuItemChatGPT.addEventListener('click', function () {
+      handleMenuItemClick(menuItemChatGPT);
+    });
+
+    menuItemTwitter.addEventListener('click', function () {
+      handleMenuItemClick(menuItemTwitter);
+    });
+
+    // Close the context menu when clicking outside
+    document.addEventListener('click', function (e) {
+      if (!contextMenu.contains(e.target) && e.target !== content) {
+        hideContextMenu();
+      }
+    });
+    </script>
+</body>
+</html>
